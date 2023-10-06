@@ -11,6 +11,7 @@ const Details = () => {
     const displayWeatherCards = () => {
         return data.map(hourlyData => {
             return <Stack
+                data-test={`weather-accordion-${hourlyData?.dt_txt}`}
                 direction='row'
                 key={hourlyData?.dt_txt}
             >
@@ -27,6 +28,7 @@ const Details = () => {
     };
 
     const header = <Typography
+        data-test='weather-app-details-header'
         component={Link}
         to={`/`}
         variant='h4'

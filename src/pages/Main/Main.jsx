@@ -74,13 +74,14 @@ const Main = () => {
 
     const isEmpty = (obj) => Object.keys(obj).length === 0;
 
-    const header = <Typography sx={{ mb: 3 }} variant='h4'>{title}</Typography>;
+    const header = <Typography data-test='weather-app-header' sx={{ mb: 3 }} variant='h4'>{title}</Typography>;
 
     const subHeader = <Stack alignItems='center' direction="row" sx={{ gap: 1, mb: 1.5 }} >
         <Typography variant='h6'>{`${weatherData?.city?.name || ''}, ${weatherData?.city?.country || ''}`}</Typography>
         <Button
-            variant='outlined'
+            data-test='metric-unit-button'
             onClick={changeMeasurements}
+            variant='outlined'
         >{measurements[units]}
         </Button>
     </Stack>
@@ -144,6 +145,7 @@ const Main = () => {
                     const response = await fetch(alertRequest);
                     const data = await response.json();
                     setAlertData(data?.alerts || []);
+                    window.alertData = data?.alerts || [];
                 } catch (err) {
                     console.error(err)
                 }

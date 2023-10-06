@@ -22,20 +22,21 @@ const AlertDialog = ({ data, title }) => {
     };
 
     return (
-        <Stack sx={{ mb: 2 }}>
+        <Stack data-test='weather-alert-dialog-button-open' sx={{ mb: 2 }}>
             <Button color='error' onClick={handleClickOpen} variant="contained" >
                 Weather Alerts
             </Button>
             <Dialog
+                data-test='weather-alert-dialog'
                 open={open}
                 onClose={handleClose}
             >
-                <DialogTitle>
+                <DialogTitle data-test='weather-alert-dialog-title'>
                     {`Weather alerts: ${title}`}
                 </DialogTitle>
                 {data.map(alert => {
                     return <Stack key={`${alert.event}-${alert.start}`}>
-                        <DialogContent >
+                        <DialogContent data-test='weather-alert-dialog-content' >
                             <Typography variant='h6'>{alert.sender_name}</Typography>
                             <DialogContentText>
                                 {alert.description}
@@ -44,7 +45,7 @@ const AlertDialog = ({ data, title }) => {
                     </Stack>
                 })}
                 <DialogActions>
-                    <Button onClick={handleClose} variant="outlined">Close</Button>
+                    <Button data-test='weather-alert-dialog-button-close' onClick={handleClose} variant="outlined">Close</Button>
                 </DialogActions>
             </Dialog>
         </Stack>

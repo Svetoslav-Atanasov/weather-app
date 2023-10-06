@@ -24,6 +24,7 @@ const WeatherCard = ({ data, date, id, units }) => {
 
     return (
         <Card
+            data-test={`weather-card-${date}`}
             onClick={() => navigate(`${id}`, { state: { data, date, units } })}
             sx={{
                 display: 'flex',
