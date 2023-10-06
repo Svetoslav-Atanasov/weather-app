@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import AlertDialog from '../../components/Dialog/Dialog';
 import WeatherCard from '../../components/Card/Card';
+import db from '../../db'
 
 const Main = () => {
     const [alertData, setAlertData] = useState([]);
@@ -15,7 +16,16 @@ const Main = () => {
     const title = 'Weather App';
     const weatherRequest = `https://api.openweathermap.org/data/2.5/forecast?units=${units}&lat=${coordinates.latitude}&lon=${coordinates.longitude}&appid=e1656b868404c2cb08f5edf191cf41e3`;
 
-    const changeMeasurements = () => { if (units === 'metric') { setUnits('imperial') } else setUnits('metric') };
+    const changeMeasurements = async () => {
+        const newUnit = units === 'metric' ? 'imperial' : 'metric';
+        setUnits(newUnit);
+
+        try {
+            await db.units.update(1, { unit: newUnit });
+        } catch (error) {
+            console.error('Error updating default unit:', error);
+        }
+    };
 
     const currentLocation = () => {
         const coordinates = {};
@@ -26,6 +36,7 @@ const Main = () => {
     };
 
     const renderWeatherCards = () => {
+        if (isEmpty(weatherData)) return;
         const groupedData = weatherData?.list.reduce((acc, data) => {
             const date = data.dt_txt.split(' ')[0];
             if (!acc[date]) {
@@ -75,6 +86,37 @@ const Main = () => {
     </Stack>
 
     const alerts = alertData.length > 0 && <AlertDialog data={alertData} title={`${weatherData?.city?.name || ''}, ${weatherData?.city?.country || ''}`} />
+
+    useEffect(() => {
+        async function setDefaultUnit() {
+            try {
+                const existingEntry = await db.units.get(1);
+
+                if (existingEntry) {
+                    await db.units.update(1, { unit: 'metric' });
+                } else {
+                    await db.units.put({ id: 1, unit: 'metric' });
+                }
+            } catch (error) {
+                console.error('Error setting default unit:', error);
+            }
+        }
+
+        setDefaultUnit();
+    }, []);
+
+    useEffect(() => {
+        async function getDefaultUnit() {
+            try {
+                const defaultUnit = await db.units.get(1);
+                setUnits(defaultUnit?.unit || 'metric');
+            } catch (error) {
+                console.error('Error getting default unit:', error);
+            }
+        }
+
+        getDefaultUnit();
+    }, []);
 
     useEffect(() => {
         currentLocation();
