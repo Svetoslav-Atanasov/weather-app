@@ -1,6 +1,6 @@
 # Weather App
 
-## Start Project
+## Project
 
 This project uses the `React.js` framework.
 
@@ -14,7 +14,7 @@ Then run this command in the project directory:
 
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-## Start Tests
+## Tests
 
 Tests are conducted using the `Cypress` testing tool.
 
@@ -32,3 +32,11 @@ Choose `E2E Testing`.
 Next, choose a browser (Chrome, Edge, etc) and click on `Start E2E Testing in (browser name)`.
 
 A new window shall open. In order to run the tests click on `weather-app.cy.js`.
+
+## Storybook
+
+Run this command in the project directory:
+
+### `npm run storybook`
+
+A new tab with [http://localhost:6006](http://localhost:6006) will open in your browser.
